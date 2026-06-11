@@ -29,3 +29,5 @@ Run the script corresponding to your operating system:
 ```bash
 python open_clam_scanner_[platform].py
 ```
+
+ClamAV Defense uses the calmqt logo/branding. ITS MY LIBERTY!!!
