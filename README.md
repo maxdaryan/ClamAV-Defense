@@ -1,6 +1,9 @@
 # ClamAV Defense
 
+<img src="calmqt.png" width="128" alt="ClamAV Defense Logo">
+
 A polished, beginner-friendly GUI for ClamAV, built with Python and PyQt6.
+
 
 ## Multi-Platform Support
 This project now features dedicated versions for different operating systems:
