@@ -4,3 +4,10 @@ logs/
 quarantine/
 ClamAV_Defense_macOS.pkg
 ClamAV_Defense_macOS.zip
+dist/
+build/
+*.spec
+*.dmg
+*.pkg
+*.zip
+logo.icns

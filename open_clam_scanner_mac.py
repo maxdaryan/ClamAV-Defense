@@ -50,8 +50,16 @@ from PyQt6.QtWidgets import (
 APP_TITLE = "Open Clam Scanner"
 APP_VERSION = "1.0.0"
 HOME_DIR = Path.home()
-LOGS_DIR = Path(__file__).resolve().parent / "logs"
-QUARANTINE_DIR = Path(__file__).resolve().parent / "quarantine"
+
+# Use standard macOS user-writable directories for logs and quarantine
+APP_DATA_DIR = HOME_DIR / "Library" / "Application Support" / "ClamAV-Defense"
+LOGS_DIR = APP_DATA_DIR / "logs"
+QUARANTINE_DIR = APP_DATA_DIR / "quarantine"
+
+# Create application data directories immediately
+APP_DATA_DIR.mkdir(parents=True, exist_ok=True)
+LOGS_DIR.mkdir(parents=True, exist_ok=True)
+QUARANTINE_DIR.mkdir(parents=True, exist_ok=True)
 
 # Quick-scan targets (common user folders)
 QUICK_SCAN_DIRS = [
@@ -64,9 +72,34 @@ QUICK_SCAN_DIRS = [
 # ──────────────────────────────────────────────────────────────────────────────
 # Utility: detect ClamAV binaries & database
 # ──────────────────────────────────────────────────────────────────────────────
+def resource_path(relative_path: str) -> str:
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
+
 def find_binary(name: str) -> str | None:
-    """Return full path to *name* if it exists on PATH, else None."""
-    return shutil.which(name)
+    """Return full path to *name* if it exists on PATH, else check common macOS paths."""
+    # 1. Check system PATH
+    found = shutil.which(name)
+    if found:
+        return found
+    
+    # 2. Check common macOS installation paths (Homebrew, etc.)
+    candidates = [
+        f"/opt/homebrew/bin/{name}",     # Apple Silicon Homebrew
+        f"/usr/local/bin/{name}",        # Intel Homebrew / Manual
+        f"/usr/bin/{name}",              # System
+    ]
+    for path in candidates:
+        if os.path.exists(path):
+            return path
+            
+    return None
 
 
 def get_clamav_version(clamscan_path: str) -> str:
@@ -268,13 +301,9 @@ class MainWindow(QMainWindow):
         self._scan_running = False
         self._infected_files: list[str] = []
 
-        # ── Ensure dirs ──
-        LOGS_DIR.mkdir(exist_ok=True)
-        QUARANTINE_DIR.mkdir(exist_ok=True)
-
         # ── Window setup ──
         self.setWindowTitle("Open Clam Scanner")
-        self.setWindowIcon(QIcon(str(Path(__file__).resolve().parent / "calmqt.png")))
+        self.setWindowIcon(QIcon(resource_path("calmqt.png")))
         self.setMinimumSize(920, 750)
         self.resize(1060, 850)
 
