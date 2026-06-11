@@ -2,7 +2,12 @@
 
 <img src="calmqt.png" width="128" alt="ClamAV Defense Logo">
 
+![Python](https://img.shields.io/badge/Python-3.10+-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-lightgrey)
+
 A polished, beginner-friendly GUI for ClamAV, built with Python and PyQt6.
+
 
 
 ## Multi-Platform Support
