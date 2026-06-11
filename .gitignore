@@ -2,3 +2,5 @@
 __pycache__/
 logs/
 quarantine/
+ClamAV_Defense_macOS.pkg
+ClamAV_Defense_macOS.zip
