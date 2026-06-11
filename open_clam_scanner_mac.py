@@ -274,6 +274,7 @@ class MainWindow(QMainWindow):
 
         # ── Window setup ──
         self.setWindowTitle("Open Clam Scanner")
+        self.setWindowIcon(QIcon(str(Path(__file__).resolve().parent / "calmqt.png")))
         self.setMinimumSize(920, 750)
         self.resize(1060, 850)
 
