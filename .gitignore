@@ -11,3 +11,4 @@ build/
 *.pkg
 *.zip
 logo.icns
+dist_old/
